@@ -18,3 +18,6 @@ JUEGO RECICLA2 https://github.com/OptimusDrift/recicla2 MECANICA EN TYPESCRIPT
 https://www.emanueleferonato.com/2011/11/03/develop-a-flash-game-like-angry-birds-using-box2d-predictive-trajectory-line/ TRAYECTORIA PREDICTIVA
 
 https://www.emanueleferonato.com/2015/09/08/html5-physics-sling-with-predictive-trajectory-like-trick-shot-ios-game-using-phaser-box2d/ 
+
+Definir : Si es singleplayer ( investigar como hacer para que la pc juegue sola)
+Si es 2 player (Hay que realizar mecanica para que primero lance el izquierdo y luego el derecho)
