@@ -7,7 +7,13 @@ export default class Perdedor extends Phaser.Scene {
 
   preload() {}
 
-  create() {}
+  create() {
+    this.add.text(5, 340, "PERDEDOR", {
+      fontSize: "18px",
+      fill: "#FFFFFF",
+    });
+    console.log("perdedor");
+  }
 
   update() {}
 }

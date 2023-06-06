@@ -3,11 +3,28 @@ export default class Juego extends Phaser.Scene {
     super("gameplay");
   }
 
-  init() {}
+  init() {
+    this.isWinner;
+    this.isLoser;
+  }
 
   preload() {}
 
-  create() {}
+  create() {
+    this.add.image(0, 0, "menu");
+    this.add.text(5, 340, "GAMEPLAY", {
+      fontSize: "18px",
+      fill: "#FFFFFF",
+    });
+    console.log("gameplay");
+  }
 
-  update() {}
+  update() {
+    if (this.isWinner) {
+      this.scene.start("ganador");
+    }
+    if (this.isLoser) {
+      this.scene.start("perdedor");
+    }
+  }
 }

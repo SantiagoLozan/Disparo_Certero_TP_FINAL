@@ -7,7 +7,13 @@ export default class Ganador extends Phaser.Scene {
 
   preload() {}
 
-  create() {}
+  create() {
+    this.add.text(5, 340, "GANADOR", {
+      fontSize: "18px",
+      fill: "#FFFFFF",
+    });
+    console.log("ganador");
+  }
 
   update() {}
 }

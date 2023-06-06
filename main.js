@@ -1,4 +1,3 @@
-import HelloWorldScene from "./assets/scenes/HelloWorldScene.js";
 import Precarga from "./assets/scenes/Precarga.js";
 import Juego from "./assets/scenes/Juego.js";
 import Ganador from "./assets/scenes/Ganador.js";
