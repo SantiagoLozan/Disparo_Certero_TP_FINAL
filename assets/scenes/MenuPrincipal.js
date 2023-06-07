@@ -33,6 +33,3 @@ export default class MenuPrincipal extends Phaser.Scene {
     this.scene.start("informacion");
   }
 }
-
-// botonInformacion.setInteractive true this.scene.start 'informacion'
-// botonGameplay.setInteractive true this.scene.start 'gameplay'
