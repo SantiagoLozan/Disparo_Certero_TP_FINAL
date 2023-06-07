@@ -6,6 +6,7 @@ export default class Juego extends Phaser.Scene {
   init() {
     this.isWinner;
     this.isLoser;
+    this.pos = 0;
   }
 
   preload() {}
@@ -47,7 +48,17 @@ export default class Juego extends Phaser.Scene {
 
     this.objetivo.body.allowGravity = false;
 
-    this.camarajugador = this.cameras.main.startFollow(this.jugador);
+    this.cam = this.cameras.main;
+
+    if (this.pos === 0) {
+      this.cameras.main.startFollow(this.objetivo);
+      this.cam.pan(0, 0, 4000);
+      this.pos++;
+    }
+    if (this.pos === 1) {
+      this.camarajugador = this.cameras.main.startFollow(this.jugador);
+    }
+
     this.cameras.main.setBounds(
       0,
       0,
@@ -55,6 +66,8 @@ export default class Juego extends Phaser.Scene {
       map.heightInPixels,
       true
     );
+
+    this.cameras.main.centerOn(0, 0);
     this.physics.world.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
 
     this.cursors = this.input.keyboard.createCursorKeys();
