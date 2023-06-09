@@ -25,6 +25,7 @@ export default class Precarga extends Phaser.Scene {
     this.load.image("decoNivel2", "/assets/images/Luna.png");
     this.load.image("cieloNivel2", "/assets/images/BG4.png");
     this.load.image("objetivo", "assets/images/Objetivo.png");
+    this.load.image("arrow", "/assets/images/Arrow.png");
 
     this.load.spritesheet("arqueroCaminando", "/assets/images/Walk.png", {
       frameWidth: 128,
@@ -37,6 +38,10 @@ export default class Precarga extends Phaser.Scene {
     this.load.spritesheet("idle", "/assets/images/Idle.png", {
       frameWidth: 128,
       frameHeight: 128,
+    });
+    this.load.spritesheet("arqueroDisparando", "/assets/images/Shot.png", {
+        frameWidth: 128,
+        frameHeight: 128,  
     });
   }
 
@@ -70,7 +75,19 @@ export default class Precarga extends Phaser.Scene {
       frameRate: 20,
       repeat: 1,
     });
+
+    this.anims.create({
+      key: "shoot",
+      frames: this.anims.generateFrameNumbers("arqueroDisparando", {
+        start: 1,
+        end: 15,
+      }),
+      frameRate: 10,
+      repeat: 1,
+    });
   }
+
+  
 
   update() {
     if (this.enter.isDown) {

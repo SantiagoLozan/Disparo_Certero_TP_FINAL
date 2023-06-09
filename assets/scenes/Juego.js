@@ -9,7 +9,10 @@ export default class Juego extends Phaser.Scene {
     this.pos = 0;
   }
 
-  preload() {}
+  preload() {
+    this.enter = this.input.keyboard.addKey(
+      Phaser.Input.Keyboard.KeyCodes.ENTER)
+  }
 
   create() {
     const map = this.make.tilemap({ key: "nivel1" });
@@ -57,9 +60,14 @@ export default class Juego extends Phaser.Scene {
     }
     if (this.pos === 1) {
       this.camarajugador = this.cameras.main.startFollow(this.jugador);
+      //sumar un poss para que siga la flecha.
     }
 
-    this.cameras.main.setBounds(
+    this.arrow = this.physics.add.sprite(100, -500, "arrow").setCollideWorldBounds(true).setScale(1.2);
+    this.arrow.body.allowGravity = true; 
+
+
+      this.cameras.main.setBounds(
       0,
       0,
       map.widthInPixels,
@@ -92,10 +100,15 @@ export default class Juego extends Phaser.Scene {
       this.jugador.setVelocityX(500);
       this.jugador.anims.play("right", true);
     }
+    else if (this.cursors.up.isDown) {
+      this.jugador.anims.play("shoot", true);
+    }
     //stop
     else {
       this.jugador.setVelocityX(0);
       this.jugador.anims.play("idle", true);
     }
-  }
+    
+  
+}
 }
