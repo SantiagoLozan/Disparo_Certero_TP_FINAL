@@ -6,6 +6,7 @@ export default class Juego extends Phaser.Scene {
   init() {
     this.isWinner;
     this.isLoser;
+    // variable para ir moviendo la camara
     this.pos = 0;
   }
 
@@ -62,9 +63,9 @@ export default class Juego extends Phaser.Scene {
       this.camarajugador = this.cameras.main.startFollow(this.jugador);
       //sumar un poss para que siga la flecha.
     }
-
-    this.arrow = this.physics.add.sprite(100, -500, "arrow").setCollideWorldBounds(true).setScale(1.2);
-    this.arrow.body.allowGravity = true; 
+    //crear flecha
+    //this.arrow = this.physics.add.sprite(100, -500, "arrow").setCollideWorldBounds(true).setScale(1.2);
+    //this.arrow.body.allowGravity = true; 
 
 
       this.cameras.main.setBounds(
