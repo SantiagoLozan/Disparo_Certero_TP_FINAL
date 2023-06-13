@@ -40,8 +40,8 @@ export default class Precarga extends Phaser.Scene {
       frameHeight: 128,
     });
     this.load.spritesheet("arqueroDisparando", "/assets/images/Shot.png", {
-        frameWidth: 128,
-        frameHeight: 128,  
+      frameWidth: 128,
+      frameHeight: 128,
     });
   }
 
@@ -86,8 +86,6 @@ export default class Precarga extends Phaser.Scene {
       repeat: 1,
     });
   }
-
-  
 
   update() {
     if (this.enter.isDown) {

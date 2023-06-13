@@ -6,6 +6,9 @@ export default class MenuPrincipal extends Phaser.Scene {
   init() {
     this.botonMenu;
     this.botonInfo;
+    this.enter = this.input.keyboard.addKey(
+      Phaser.Input.Keyboard.KeyCodes.ENTER
+    );
   }
 
   preload() {}
@@ -17,6 +20,9 @@ export default class MenuPrincipal extends Phaser.Scene {
   }
 
   update() {
+    if (this.enter.isDown) {
+      this.scene.start("gameplay");
+    }
     this.botonMenu
       .setInteractive({ useHandCursor: true })
       .on("pointerdown", () => this.arranqueJuego());

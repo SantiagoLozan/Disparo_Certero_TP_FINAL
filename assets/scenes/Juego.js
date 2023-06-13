@@ -6,13 +6,18 @@ export default class Juego extends Phaser.Scene {
   init() {
     this.isWinner;
     this.isLoser;
-    // variable para ir moviendo la camara
-    this.pos = 0;
+    this.firstVarX = 0;
+    this.firstVarY = 0;
+    this.finalVarX = 0;
+    this.finalVarY = 0;
+    this.primaryDown = false;
   }
 
   preload() {
     this.enter = this.input.keyboard.addKey(
-      Phaser.Input.Keyboard.KeyCodes.ENTER)
+      Phaser.Input.Keyboard.KeyCodes.ENTER
+    );
+    this.onClick = this.input.activePointer;
   }
 
   create() {
@@ -54,21 +59,17 @@ export default class Juego extends Phaser.Scene {
 
     this.cam = this.cameras.main;
 
-    if (this.pos === 0) {
-      this.cameras.main.startFollow(this.objetivo);
-      this.cam.pan(0, 0, 4000);
-      this.pos++;
-    }
-    if (this.pos === 1) {
-      this.camarajugador = this.cameras.main.startFollow(this.jugador);
-      //sumar un poss para que siga la flecha.
-    }
+    this.cameras.main.startFollow(this.objetivo);
+    this.moverCamaraJugador();
+
     //crear flecha
-    //this.arrow = this.physics.add.sprite(100, -500, "arrow").setCollideWorldBounds(true).setScale(1.2);
-    //this.arrow.body.allowGravity = true; 
+    this.arrow = this.physics.add
+      .sprite(100, -500, "arrow")
+      .setCollideWorldBounds(true)
+      .setScale(1.2);
+    this.arrow.body.allowGravity = true;
 
-
-      this.cameras.main.setBounds(
+    this.cameras.main.setBounds(
       0,
       0,
       map.widthInPixels,
@@ -80,8 +81,11 @@ export default class Juego extends Phaser.Scene {
     this.physics.world.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
 
     this.cursors = this.input.keyboard.createCursorKeys();
+    this.onClick;
 
     this.physics.add.collider(this.jugador, mapaLayer);
+    this.physics.add.collider(this.arrow, mapaLayer);
+    this.physics.add.collider(this.arrow, this.objetivo);
   }
 
   update() {
@@ -100,16 +104,49 @@ export default class Juego extends Phaser.Scene {
     else if (this.cursors.right.isDown) {
       this.jugador.setVelocityX(500);
       this.jugador.anims.play("right", true);
-    }
-    else if (this.cursors.up.isDown) {
+    } else if (this.cursors.up.isDown) {
       this.jugador.anims.play("shoot", true);
     }
     //stop
     else {
       this.jugador.setVelocityX(0);
-      this.jugador.anims.play("idle", true);
+      //this.jugador.anims.play("idle", true);
     }
-    
-  
-}
+
+    if (this.input.activePointer.isDown) {
+      this.primaryDown = true;
+      this.firstVarX = this.input.activePointer.x;
+      this.firstVarY = this.input.activePointer.y;
+      console.log(this.firstVarX, "pointer en x");
+      console.log(this.firstVarY, "pointer en y");
+    }
+    if (this.primaryDown && this.input.activePointer.leftButtonReleased()) {
+      this.finalVarX = this.input.activePointer.x;
+      this.finalVarY = this.input.activePointer.y;
+      console.log(this.finalVarX, "var x");
+      console.log(this.finalVarY, "var y");
+      this.primaryDown = false;
+      this.physics.moveTo(this.arrow, this.finalVarX, this.finalVarY);
+    }
+    //else if ((this.primaryDown = false))
+    //this.finalVarX = this.input.activePointer.x;
+    //this.finalVarY = this.input.activePointer.y;
+    //}
+  }
+
+  moverCamaraJugador() {
+    this.cam.pan(
+      this.jugador.x,
+      this.jugador.y,
+      4000,
+      "Sine.easeInOut",
+      false,
+      //The camera pan callback
+      (camera, progress) => {
+        if (progress === 1) {
+          camera.startFollow(this.jugador);
+        }
+      }
+    );
+  }
 }
