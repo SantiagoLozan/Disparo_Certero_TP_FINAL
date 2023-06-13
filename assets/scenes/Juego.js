@@ -128,10 +128,6 @@ export default class Juego extends Phaser.Scene {
       this.primaryDown = false;
       this.physics.moveTo(this.arrow, this.finalVarX, this.finalVarY);
     }
-    //else if ((this.primaryDown = false))
-    //this.finalVarX = this.input.activePointer.x;
-    //this.finalVarY = this.input.activePointer.y;
-    //}
   }
 
   moverCamaraJugador() {
