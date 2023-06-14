@@ -85,7 +85,7 @@ export default class Juego extends Phaser.Scene {
 
     this.physics.add.collider(this.jugador, mapaLayer);
     this.physics.add.collider(this.arrow, mapaLayer);
-    this.physics.add.collider(this.arrow, this.objetivo);
+    this.physics.add.overlap(this.arrow, this.objetivo);
   }
 
   update() {
@@ -96,22 +96,7 @@ export default class Juego extends Phaser.Scene {
       this.scene.start("perdedor");
     }
 
-    if (this.cursors.left.isDown) {
-      this.jugador.setVelocityX(-160);
-      this.jugador.anims.play("left", true);
-    }
-    //move right
-    else if (this.cursors.right.isDown) {
-      this.jugador.setVelocityX(500);
-      this.jugador.anims.play("right", true);
-    } else if (this.cursors.up.isDown) {
-      this.jugador.anims.play("shoot", true);
-    }
-    //stop
-    else {
-      this.jugador.setVelocityX(0);
-      //this.jugador.anims.play("idle", true);
-    }
+    this.playerMovement.call(this);
 
     if (this.input.activePointer.isDown) {
       this.primaryDown = true;
@@ -144,5 +129,21 @@ export default class Juego extends Phaser.Scene {
         }
       }
     );
+  }
+
+  playerMovement() {
+
+    if (this.cursors.left.isDown) {
+      this.jugador.setVelocityX(-160);
+      this.jugador.anims.play("left", true);
+    } else if (this.cursors.right.isDown) {
+      this.jugador.setVelocityX(500);
+      this.jugador.anims.play("right", true);
+    } else if (this.cursors.up.isDown) {
+      this.jugador.anims.play("shoot", true);
+    } else {
+      this.jugador.setVelocityX(0);
+      this.jugador.anims.play("idle", true);
+    }
   }
 }

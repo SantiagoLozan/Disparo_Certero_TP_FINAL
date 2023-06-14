@@ -56,7 +56,7 @@ export default class Precarga extends Phaser.Scene {
         end: 6,
       }),
       frameRate: 10,
-      repeat: -1,
+      repeat: false,
     });
 
     this.anims.create({
@@ -83,7 +83,7 @@ export default class Precarga extends Phaser.Scene {
         end: 15,
       }),
       frameRate: 10,
-      repeat: 1,
+      repeat: -1,
     });
   }
 
