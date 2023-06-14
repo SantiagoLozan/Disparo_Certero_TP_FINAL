@@ -11,6 +11,8 @@ export default class Juego extends Phaser.Scene {
     this.finalVarX = 0;
     this.finalVarY = 0;
     this.primaryDown = false;
+    this.curveGraphics;
+    this.arrowCurve;
   }
 
   preload() {
@@ -69,6 +71,16 @@ export default class Juego extends Phaser.Scene {
       .setScale(1.2);
     this.arrow.body.allowGravity = true;
 
+    this.curveGraphics = this.add.graphics();
+    this.curveGraphics.lineStyle(10, 0xffffff);
+
+    this.arrowCurve = new Phaser.Curves.QuadraticBezier(
+      new Phaser.Math.Vector2(this.firstVarX, this.firstVarY), // Punto de inicio
+      new Phaser.Math.Vector2((this.firstVarX + this.finalVarX) / 2, this.finalVarY), // Punto de control
+      new Phaser.Math.Vector2(this.finalVarX, this.finalVarY) // Punto final
+    );
+
+
     this.cameras.main.setBounds(
       0,
       0,
@@ -113,8 +125,36 @@ export default class Juego extends Phaser.Scene {
       this.primaryDown = false;
       this.physics.moveTo(this.arrow, this.finalVarX, this.finalVarY);
     }
-  }
+    
+  // Calcular la dirección y la velocidad de la flecha
+  const diffX = this.finalVarX - this.firstVarX;
+  const diffY = this.finalVarY - this.firstVarY;
+  const magnitude = Math.sqrt(diffX * diffX + diffY * diffY);
+  const directionX = diffX / magnitude;
+  const directionY = diffY / magnitude;
+  const arrowSpeed = 500; // Ajusta la velocidad según tus necesidades
 
+  // Mover la flecha con la velocidad calculada
+  this.arrow.setVelocity(directionX * arrowSpeed, directionY * arrowSpeed);   
+
+  // Actualizar la curva cuadrática con los nuevos puntos
+  this.arrowCurve.p0.set(this.firstVarX, this.firstVarY);
+  this.arrowCurve.p1.set(this.finalVarX, this.finalVarY);
+  this.arrowCurve.p2.set(this.arrow.x, this.arrow.y);
+
+  // Limpiar los gráficos y dibujar la nueva curva
+  this.curveGraphics.clear();
+    this.curveGraphics.lineStyle(2, 0xffffff);
+    this.curveGraphics.beginPath();
+    this.curveGraphics.moveTo(this.arrow.x, this.arrow.y);
+    const points = this.arrowCurve.getPoints(20); // Obtener puntos de la curva
+    for (let i = 0; i < points.length; i++) {
+      this.curveGraphics.lineTo(points[i].x, points[i].y);
+    }
+    this.curveGraphics.strokePath();
+  
+}
+  
   moverCamaraJugador() {
     this.cam.pan(
       this.jugador.x,
