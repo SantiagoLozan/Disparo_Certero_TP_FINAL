@@ -99,7 +99,7 @@ export default class Juego extends Phaser.Scene {
 
     this.playerMovement.call(this);
 
-    if (this.input.activePointer.isDown) {
+    if (this.primaryDown === false && this.input.activePointer.isDown) {
       this.primaryDown = true;
       this.firstVarX = this.input.activePointer.x;
       this.firstVarY = this.input.activePointer.y;
@@ -107,12 +107,13 @@ export default class Juego extends Phaser.Scene {
       console.log(this.firstVarY, "pointer en y");
     }
     if (this.primaryDown && this.input.activePointer.leftButtonReleased()) {
+      this.primaryDown = false;
       this.finalVarX = this.input.activePointer.x;
       this.finalVarY = this.input.activePointer.y;
       console.log(this.finalVarX, "final var x");
       console.log(this.finalVarY, "final var y");
-      this.primaryDown = false;
-      this.physics.moveTo(this.arrow, this.finalVarX, this.finalVarY);
+
+      this.physics.moveTo(this.arrow, this.firstVarX, this.firstVarY);
     }
   }
 
