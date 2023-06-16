@@ -12,6 +12,10 @@ export default class Juego extends Phaser.Scene {
     this.finalVarY = 0;
     this.primaryDown = false;
     this.arrow;
+    this.trajectoryGraphics;
+    this.launchRectangle = new Phaser.Geom.Rectangle(250, 250, 200, 150);
+    this.forceMult = 5;
+    this.launchVelocity;
   }
 
   preload() {
@@ -63,12 +67,12 @@ export default class Juego extends Phaser.Scene {
     this.cameras.main.startFollow(this.objetivo);
     this.moverCamaraJugador();
 
+    this.graphics = this.add.graphics({
+      lineStyle: { width: 10, color: 0xffdd00, alpha: 0.5 },
+    });
+    this.line = new Phaser.Geom.Line();
+
     //crear flecha
-    this.arrow = this.physics.add
-      .sprite(200, 300, "arrow")
-      .setCollideWorldBounds(true);
-    this.arrow.setBounce(0);
-    this.arrow.body.allowGravity = true;
 
     this.cameras.main.setBounds(
       0,
@@ -85,8 +89,6 @@ export default class Juego extends Phaser.Scene {
     this.onClick;
 
     this.physics.add.collider(this.jugador, mapaLayer);
-    this.physics.add.collider(this.arrow, this.mapaLayer);
-    this.physics.add.collider(this.arrow, this.objetivo);
   }
 
   update() {
@@ -103,17 +105,47 @@ export default class Juego extends Phaser.Scene {
       this.primaryDown = true;
       this.firstVarX = this.input.activePointer.x;
       this.firstVarY = this.input.activePointer.y;
-      console.log(this.firstVarX, "pointer en x");
-      console.log(this.firstVarY, "pointer en y");
+      this.firstPoint = [this.firstVarX, this.firstVarY];
+      console.log(this.firstPoint, "punto x y");
     }
     if (this.primaryDown && this.input.activePointer.leftButtonReleased()) {
       this.primaryDown = false;
       this.finalVarX = this.input.activePointer.x;
       this.finalVarY = this.input.activePointer.y;
-      console.log(this.finalVarX, "final var x");
-      console.log(this.finalVarY, "final var y");
+      this.finalPoint = [this.finalVarX, this.finalVarY];
+      console.log(this.finalPoint, "punto x y final");
 
+      if (this.firstPoint && this.finalPoint) {
+        this.angle = Phaser.Math.Angle.BetweenPoints(
+          this.firstPoint,
+          this.finalPoint
+        );
+      }
+      Phaser.Geom.Line.SetToAngle(
+        this.line,
+        this.firstPoint,
+        this.finalPoint,
+        this.angle,
+        128
+      );
+      this.graphics.clear().strokeLineShape(this.line);
+      /*this.arrow = this.physics.add
+        .sprite(500, 600, "arrow")
+        .setCollideWorldBounds(true);
+      this.arrow.setBounce(0);
+      this.arrow.body.allowGravity = true;
+      console.log(this.arrow, "creada");
+
+      this.physics.add.collider(this.arrow, this.mapaLayer);
+      this.physics.add.collider(this.arrow, this.objetivo);
+
+      this.physics.velocityFromRotation(
+        this.angle,
+        600,
+        this.arrow.body.velocity
+      );
       this.physics.moveTo(this.arrow, this.firstVarX, this.firstVarY);
+      */
     }
   }
 
