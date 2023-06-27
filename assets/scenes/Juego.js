@@ -12,10 +12,8 @@ export default class Juego extends Phaser.Scene {
     this.finalVarY = 0;
     this.primaryDown = false;
     this.arrow;
-    this.trajectoryGraphics;
-    this.launchRectangle = new Phaser.Geom.Rectangle(250, 250, 200, 150);
-    this.forceMult = 5;
-    this.launchVelocity;
+    this.contadorSuelo = 0;
+    this.sonidoBackground;
   }
 
   preload() {
@@ -26,6 +24,7 @@ export default class Juego extends Phaser.Scene {
   }
 
   create() {
+    //Creacion tileset
     const map = this.make.tilemap({ key: "nivel1" });
     const capaFondo = map.addTilesetImage("BG1", "cieloNivel1");
     const capaMapa = map.addTilesetImage("BG3", "sueloNivel1");
@@ -38,6 +37,9 @@ export default class Juego extends Phaser.Scene {
     const objetosLayer = map.getObjectLayer("Objetos");
 
     mapaLayer.setCollisionByProperty({ colision: true });
+
+    this.sonidoBackground = this.sound.add("BGM1", { loop: false });
+    this.sonidoBackground.play();
 
     let spawnPoint = map.findObject(
       "Objetos",
@@ -66,13 +68,26 @@ export default class Juego extends Phaser.Scene {
 
     this.cameras.main.startFollow(this.objetivo);
     this.moverCamaraJugador();
+    
 
+    
+
+    this.line = new Phaser.Geom.Line(this.firstVarX, this.firstVarY, this.finalVarX, this.finalVarY);
     this.graphics = this.add.graphics({
       lineStyle: { width: 10, color: 0xffdd00, alpha: 0.5 },
     });
-    this.line = new Phaser.Geom.Line();
-
+    
+    this.graphics.strokeLineShape(this.line);
     //crear flecha
+    //this.arrow = this.physics.add.sprite(600, 600, "arrow").setCollideWorldBounds(true);
+    //this.arrow.body.allowGravity = true;
+    
+
+    this.arrowCurve = new Phaser.Curves.QuadraticBezier(
+      new Phaser.Math.Vector2(this.firstVarX, this.firstVarY), // Punto de inicio
+      new Phaser.Math.Vector2((this.firstVarX + this.finalVarX) / 2, this.finalVarY), // Punto de control
+      new Phaser.Math.Vector2(this.finalVarX, this.finalVarY) // Punto final
+    );
 
     this.cameras.main.setBounds(
       0,
@@ -89,18 +104,23 @@ export default class Juego extends Phaser.Scene {
     this.onClick;
 
     this.physics.add.collider(this.jugador, mapaLayer);
+
+
+    //this.physics.add.collider(this.arrow, mapaLayer, this.colisionFlechaSuelo, null, this);
+    //this.physics.add.collider(this.arrow, this.objetivo, this.colisionFlechaObjetivo, null, this);
   }
 
   update() {
+    
     if (this.isWinner) {
       this.scene.start("ganador");
     }
     if (this.isLoser) {
       this.scene.start("perdedor");
     }
-
+    
     this.playerMovement.call(this);
-
+    this.graphics.clear(this.line);
     if (this.primaryDown === false && this.input.activePointer.isDown) {
       this.primaryDown = true;
       this.firstVarX = this.input.activePointer.x;
@@ -114,21 +134,25 @@ export default class Juego extends Phaser.Scene {
       this.finalVarY = this.input.activePointer.y;
       this.finalPoint = [this.finalVarX, this.finalVarY];
       console.log(this.finalPoint, "punto x y final");
-
-      if (this.firstPoint && this.finalPoint) {
-        this.angle = Phaser.Math.Angle.BetweenPoints(
-          this.firstPoint,
-          this.finalPoint
-        );
-      }
-      Phaser.Geom.Line.SetToAngle(
-        this.line,
-        this.firstPoint,
-        this.finalPoint,
-        this.angle,
-        128
-      );
-      this.graphics.clear().strokeLineShape(this.line);
+      this.graphics.clear(this.line)
+    }
+      if (this.finalVarX && this.finalVarY !== 0) {
+      this.line = new Phaser.Geom.Line(this.firstVarX, this.firstVarY, this.finalVarX, this.finalVarY);
+      this.graphics = this.add.graphics({
+      lineStyle: { width: 10, alpha:  1 },
+    });
+    this.graphics.strokeLineShape(this.line);
+    this.contador = this.contador++
+   }
+    
+   if (this.primaryDown === false && this.contador === 1 ) {
+    this.graphics.clear(this.line)
+    this.contador = this.contador--
+   }
+  /* if (this.contadorSuelo === 3) {
+        this.scene.start("perdedor")
+     }*/
+       
       /*this.arrow = this.physics.add
         .sprite(500, 600, "arrow")
         .setCollideWorldBounds(true);
@@ -147,7 +171,7 @@ export default class Juego extends Phaser.Scene {
       this.physics.moveTo(this.arrow, this.firstVarX, this.firstVarY);
       */
     }
-  }
+    
 
   moverCamaraJugador() {
     this.cam.pan(
@@ -174,9 +198,17 @@ export default class Juego extends Phaser.Scene {
       this.jugador.anims.play("right", true);
     } else if (this.cursors.up.isDown) {
       this.jugador.anims.play("shoot", true);
-    } else {
+    } 
+    else {
       this.jugador.setVelocityX(0);
       this.jugador.anims.play("idle", true);
     }
   }
+  /*colisionFlechaObjetivo(flecha, objetivo){
+    this.scene.start("gameplay2");
+  }
+  colisionFlechaSuelo(arrow, suelo){
+    arrow.disableBody(true, true)
+    this.contadorSuelo++;
+  }*/
 }

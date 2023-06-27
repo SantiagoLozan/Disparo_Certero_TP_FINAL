@@ -14,9 +14,10 @@ export default class MenuPrincipal extends Phaser.Scene {
   preload() {}
 
   create() {
-    this.add.image(400, 230, "menu").setScale(1.5);
-    this.botonMenu = this.add.image(395, 525, "botonmenu");
-    this.botonInfo = this.add.image(120, 525, "botoninfo");
+    this.add.image(400, 280, "menu");
+    this.botonMenu = this.add.image(400, 525, "botonmenu").setScale(0.5);
+    
+    this.botonInfo = this.add.image(135, 525, "botoninfo").setScale(0.5);
   }
 
   update() {
