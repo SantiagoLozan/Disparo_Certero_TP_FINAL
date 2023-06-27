@@ -1,5 +1,9 @@
-# Phaser 3 Template
+# Disparo Certero
 
-Plantilla para iniciar nuevos proyectos con PHASER 3.
+Videojuego realizado en Phaser 3 para la cátedra Programación 1 de UnRaf.
 
-Contiene configuración inicial y buenas prácticas de estructuras de carpetas.
+Disparo Certero 
+
+Es un videojuego de estrategia por turnos, en el cual el jugador principal debe realizar un disparo hacia un determinado objetivo (teniendo en cuenta ángulos y potencia).
+
+Santiago Lozan
