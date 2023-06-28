@@ -28,19 +28,19 @@ export default class Precarga extends Phaser.Scene {
     this.load.audio("BGM1", "assets/BGM/BGM1.mp3");
     this.load.audio("BGM2", "assets/BGM/BGM2.mp3");
 
-    this.load.spritesheet("arqueroCaminando", "/assets/images/Walk.png", {
+    this.load.spritesheet("arqueroCaminando", "assets/images/Walk.png", {
       frameWidth: 128,
       frameHeight: 128,
     });
-    this.load.spritesheet("arqueroCaminandoIZQ", "/assets/images/WalkIZQ.png", {
+    this.load.spritesheet("arqueroCaminandoIZQ", "assets/images/WalkIZQ.png", {
       frameWidth: 128,
       frameHeight: 128,
     });
-    this.load.spritesheet("idle", "/assets/images/Idle.png", {
+    this.load.spritesheet("idle", "assets/images/Idle.png", {
       frameWidth: 128,
       frameHeight: 128,
     });
-    this.load.spritesheet("arqueroDisparando", "/assets/images/Shot.png", {
+    this.load.spritesheet("arqueroDisparando", "assets/images/Shot.png", {
       frameWidth: 128,
       frameHeight: 128,
     });
