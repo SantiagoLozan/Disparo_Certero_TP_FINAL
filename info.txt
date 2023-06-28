@@ -5,8 +5,6 @@ https://www.emanueleferonato.com/2015/09/16/trick-shot-html5-game-prototype-part
 
 https://www.emanueleferonato.com/2023/05/12/build-a-html5-game-like-mini-archer-using-phaser-and-typescript-step-5-firing-the-arrow-without-physics-engine-only-using-tweens-and-masks/ HTML ARCHER INFINITO CON TWEENS Y MASKS
 
-https://chat.openai.com/c/9b866964-4be2-4d2a-b315-f4a7dffe68a6 CHATGPT CONQUER ANTARTICA
-
 https://www.google.com/search?q=Math.sqrt+PHASER&rlz=1C1SQJL_esAR894AR894&sxsrf=APwXEdd1CO7WdDDrWC9boQZY1Ms6DeQwTw%3A1685568935822&ei=p713ZL3eMbyz1sQPhvigiAg&ved=0ahUKEwj9zafNwaD_AhW8mZUCHQY8CIEQ4dUDCBA&uact=5&oq=Math.sqrt+PHASER&gs_lcp=Cgxnd3Mtd2l6LXNlcnAQAzIFCCEQoAEyBQghEKABMgUIIRCgAToICAAQgAQQsAM6CQgAEAcQHhCwAzoLCAAQBxAeELADEAo6BQgAEIAEOggIABCABBDLAToGCAAQFhAeOggIABAWEB4QCkoECEEYAVCEBlj6DWDgDmgBcAB4AIABtAGIAdMFkgEDNi4xmAEAoAEBwAEByAEK&sclient=gws-wiz-serp RAIZ CUADRADA PHASER
 
 https://phaser.io/news/2015/09/trick-shot-tutorial-part3 EJEMPLO - PAGINA CAIDA 
@@ -18,6 +16,3 @@ JUEGO RECICLA2 https://github.com/OptimusDrift/recicla2 MECANICA EN TYPESCRIPT
 https://www.emanueleferonato.com/2011/11/03/develop-a-flash-game-like-angry-birds-using-box2d-predictive-trajectory-line/ TRAYECTORIA PREDICTIVA
 
 https://www.emanueleferonato.com/2015/09/08/html5-physics-sling-with-predictive-trajectory-like-trick-shot-ios-game-using-phaser-box2d/ 
-
-Definir : Si es singleplayer ( investigar como hacer para que la pc juegue sola)
-Si es 2 player (Hay que realizar mecanica para que primero lance el izquierdo y luego el derecho)
