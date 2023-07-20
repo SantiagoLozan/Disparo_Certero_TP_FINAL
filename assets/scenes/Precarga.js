@@ -28,19 +28,16 @@ export default class Precarga extends Phaser.Scene {
     this.load.audio("BGM1", "assets/BGM/BGM1.mp3");
     this.load.audio("BGM2", "assets/BGM/BGM2.mp3");
 
-    this.load.spritesheet("arqueroCaminando", "assets/images/Walk.png", {
-      frameWidth: 128,
-      frameHeight: 128,
-    });
-    this.load.spritesheet("arqueroCaminandoIZQ", "assets/images/WalkIZQ.png", {
-      frameWidth: 128,
-      frameHeight: 128,
-    });
-    this.load.spritesheet("idle", "assets/images/Idle.png", {
+    
+    this.load.spritesheet("idleBow", "assets/images/Shot.png", {
       frameWidth: 128,
       frameHeight: 128,
     });
     this.load.spritesheet("arqueroDisparando", "assets/images/Shot.png", {
+      frameWidth: 128,
+      frameHeight: 128,
+    });
+    this.load.spritesheet("arqueroApuntando", "assets/images/Shot.png", {
       frameWidth: 128,
       frameHeight: 128,
     });
@@ -52,36 +49,25 @@ export default class Precarga extends Phaser.Scene {
     this.add.image(400, 525, "enter").setScale(0.5);
 
     this.anims.create({
-      key: "right",
-      frames: this.anims.generateFrameNumbers("arqueroCaminando", {
-        start: 0,
-        end: 6,
-      }),
-      frameRate: 10,
-      repeat: -1,
-    });
-
-    this.anims.create({
-      key: "left",
-      frames: this.anims.generateFrameNumbers("arqueroCaminandoIZQ", {
-        start: 6,
-        end: 0,
-      }),
-      frameRate: 10,
-      repeat: -1,
-    });
-
-    this.anims.create({
-      key: "turn",
-      frames: [("idle", { frame: 1 })],
+      key: "idleBow",
+      frames: [("idleBow", { frame: 15 })],
       frameRate: 20,
-      repeat: 1,
+      repeat: -1,
     });
 
+    this.anims.create({
+      key: "aim",
+      frames: this.anims.generateFrameNumbers("arqueroApuntando", {
+        start: 1,
+        end: 10,
+      }),
+      frameRate: 10,
+      repeat: -1,
+    });
     this.anims.create({
       key: "shoot",
       frames: this.anims.generateFrameNumbers("arqueroDisparando", {
-        start: 1,
+        start: 13,
         end: 15,
       }),
       frameRate: 10,

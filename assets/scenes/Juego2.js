@@ -12,13 +12,15 @@ export default class Juego extends Phaser.Scene {
     this.finalVarY = 0;
     this.primaryDown = false;
     this.arrow;
+    this.contadorSuelo = 0;
+    this.sonidoBackground;
   }
 
   preload() {
     this.enter = this.input.keyboard.addKey(
       Phaser.Input.Keyboard.KeyCodes.ENTER
     );
-    this.onClick = this.input.activePointer;
+    
   }
 
   create() {
@@ -49,7 +51,7 @@ export default class Juego extends Phaser.Scene {
     );
 
     this.jugador = this.physics.add
-      .sprite(spawnPoint.x, spawnPoint.y, "idle")
+      .sprite(spawnPoint.x, spawnPoint.y, "idleBow")
       .setCollideWorldBounds(true);
     this.jugador.setBounce(0.1);
     this.jugador.body.allowGravity = false;
@@ -66,32 +68,9 @@ export default class Juego extends Phaser.Scene {
     this.cameras.main.startFollow(this.objetivo);
     this.moverCamaraJugador();
 
-    this.line = new Phaser.Geom.Line(
-      this.firstVarX,
-      this.firstVarY,
-      this.finalVarX,
-      this.finalVarY
-    );
-    this.graphics = this.add.graphics({
-      lineStyle: { width: 10, color: 0xffdd00, alpha: 0.5 },
-    });
+    this.arrows = this.physics.add.group();
 
-    this.graphics.strokeLineShape(this.line);
-    //crear flecha
-    this.arrow = this.physics.add
-      .sprite(160, 270, "arrow")
-      .setCollideWorldBounds(true);
-    this.arrow.body.allowGravity = true;
-    console.log(this.arrow, "creada");
-
-    this.arrowCurve = new Phaser.Curves.QuadraticBezier(
-      new Phaser.Math.Vector2(this.firstVarX, this.firstVarY), // Punto de inicio
-      new Phaser.Math.Vector2(
-        (this.firstVarX + this.finalVarX) / 2,
-        this.finalVarY
-      ), // Punto de control
-      new Phaser.Math.Vector2(this.finalVarX, this.finalVarY) // Punto final
-    );
+    this.drawLine();
 
     this.cameras.main.setBounds(
       0,
@@ -104,19 +83,16 @@ export default class Juego extends Phaser.Scene {
     this.cameras.main.centerOn(0, 0);
     this.physics.world.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
 
-    this.cursors = this.input.keyboard.createCursorKeys();
-    this.onClick;
-
     this.physics.add.collider(this.jugador, mapaLayer);
     this.physics.add.collider(
-      this.arrow,
+      this.arrows,
       mapaLayer,
       this.colisionFlechaSuelo,
       null,
       this
     );
     this.physics.add.collider(
-      this.arrow,
+      this.arrows,
       this.objetivo,
       this.colisionFlechaObjetivo,
       null,
@@ -126,51 +102,74 @@ export default class Juego extends Phaser.Scene {
 
   update() {
     if (this.isWinner) {
+      this.game.sound.stopAll();
       this.scene.start("ganador");
     }
-    if (this.isLoser) {
+    if (this.contadorSuelo === 5) {
+      this.game.sound.stopAll();
       this.scene.start("perdedor");
     }
 
-    this.playerMovement.call(this);
-    this.graphics.clear(this.line);
-    if (this.primaryDown === false && this.input.activePointer.isDown) {
-      this.primaryDown = true;
-      this.firstVarX = this.input.activePointer.x;
-      this.firstVarY = this.input.activePointer.y;
-      this.firstPoint = [this.firstVarX, this.firstVarY];
-      console.log(this.firstPoint, "punto x y");
-    }
-    if (this.primaryDown && this.input.activePointer.leftButtonReleased()) {
-      this.primaryDown = false;
-      this.finalVarX = this.input.activePointer.x;
-      this.finalVarY = this.input.activePointer.y;
-      this.finalPoint = [this.finalVarX, this.finalVarY];
-      console.log(this.finalPoint, "punto x y final");
-      this.physics.moveTo(this.arrow, this.firstVarX, this.firstVarY, 350);
-      this.graphics.clear(this.line);
-    }
-    if (this.finalVarX && this.finalVarY !== 0) {
-      this.line = new Phaser.Geom.Line(
-        this.firstVarX,
-        this.firstVarY,
-        this.finalVarX,
-        this.finalVarY
-      );
-      this.graphics = this.add.graphics({
-        lineStyle: { width: 10, alpha: 1 },
-      });
-      this.graphics.strokeLineShape(this.line);
-      this.contador = this.contador++;
+
+    if (this.arrow) {
+      const angle = Math.atan2(this.arrow.body.velocity.y, this.arrow.body.velocity.x);
+      this.arrow.setRotation(angle);
     }
 
-    if (this.primaryDown === false && this.contador === 1) {
-      this.graphics.clear(this.line);
-      this.contador = this.contador--;
+    
+  }
+
+  shoot(line) {
+    console.log('shoot')
+    const arrow = this.arrows.create(this.jugador.x, this.jugador.y, "arrow");
+    if (arrow) {
+      this.arrow = arrow;
+      var dx = line.x1 - line.x2;
+      var dy = line.y1 - line.y2;
+      var magnitude = Math.sqrt(dx * dx + dy * dy);
+      var direction = Math.atan2(dy, dx);
+      console.log("🚀 ~ file: Juego.js:128 ~ Juego ~ shoot ~ direction:", direction)
+
+      var speed = 5;
+      arrow.setRotation(direction);
+      arrow.setVelocity(
+        speed * magnitude * Math.cos(direction),
+        speed * magnitude * Math.sin(direction)
+      );
+
+      this.cameras.main.startFollow(arrow);
+      
     }
-    /* if (this.contadorSuelo === 3) {
-        this.scene.start("perdedor")
-     }*/
+  }
+
+  drawLine() {
+    const graphics = this.add.graphics();
+    const line = new Phaser.Geom.Line();
+    let isDrawing = false;
+
+    const scene = this;
+
+    this.input.on("pointerdown", function (pointer) {
+      isDrawing = true;
+      line.x1 = pointer.x;
+      line.y1 = pointer.y;
+    });
+
+    this.input.on("pointermove", function (pointer) {
+      if (isDrawing) {
+        line.x2 = pointer.x;
+        line.y2 = pointer.y;
+        graphics.clear();
+        graphics.lineStyle(2, 0xffffff);
+        graphics.strokeLineShape(line);
+      }
+    });
+
+    this.input.on("pointerup", function (pointer) {
+      isDrawing = false;
+      scene.shoot(line);
+    });
+    
   }
 
   moverCamaraJugador() {
@@ -189,27 +188,16 @@ export default class Juego extends Phaser.Scene {
     );
   }
 
-  playerMovement() {
-    if (this.cursors.left.isDown) {
-      this.jugador.setVelocityX(-160);
-      this.jugador.anims.play("left", true);
-    } else if (this.cursors.right.isDown) {
-      this.jugador.setVelocityX(500);
-      this.jugador.anims.play("right", true);
-    } else if (this.cursors.up.isDown) {
-      this.jugador.anims.play("shoot", true);
-    } else {
-      this.jugador.setVelocityX(0);
-      this.jugador.anims.play("idle", true);
-    }
-  }
+
   colisionFlechaObjetivo(flecha, objetivo) {
     this.sonidoBackground.stop();
     this.scene.start("ganador");
   }
-  /*   
- colisionFlechaSuelo(arrow, suelo){
-    arrow.disableBody(true, true)
-    this.contadorSuelo++;
-  }*/
+
+  colisionFlechaSuelo(arrow, suelo) {
+    arrow.destroy();
+    this.arrow = null;
+    this.cameras.main.startFollow(this.jugador);
+    this.contadorSuelo++
+  } 
 }
