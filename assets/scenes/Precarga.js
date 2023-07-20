@@ -58,20 +58,20 @@ export default class Precarga extends Phaser.Scene {
     this.anims.create({
       key: "aim",
       frames: this.anims.generateFrameNumbers("arqueroApuntando", {
-        start: 1,
+        start: 0,
         end: 10,
       }),
-      frameRate: 10,
-      repeat: -1,
+      frameRate: 20,
+      repeat: 0,
     });
     this.anims.create({
       key: "shoot",
       frames: this.anims.generateFrameNumbers("arqueroDisparando", {
-        start: 13,
-        end: 15,
+        start: 11,
+        end: 14,
       }),
-      frameRate: 10,
-      repeat: -1,
+      frameRate: 20,
+      repeat: 0,
     });
   }
 

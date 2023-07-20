@@ -116,6 +116,18 @@ export default class Juego extends Phaser.Scene {
       this.arrow.setRotation(angle);
     }
 
+    if (this.arrow) {
+      const arrowLimitX = 2400; // Límite horizontal para la flecha
+      const arrowLimitY = 640; // Límite vertical para la flecha
+  
+      if (this.arrow.x < 0 || this.arrow.x > arrowLimitX || this.arrow.y > arrowLimitY) {
+        this.arrow.destroy(); // Destruir la flecha cuando se pasa del límite
+        console.log("destruida")
+        this.arrow = null;
+        this.contadorSuelo++
+        this.cameras.main.startFollow(this.jugador);
+        }
+      } 
     
   }
 
@@ -136,7 +148,7 @@ export default class Juego extends Phaser.Scene {
         speed * magnitude * Math.cos(direction),
         speed * magnitude * Math.sin(direction)
       );
-
+      this.jugador.anims.play("shoot");
       this.cameras.main.startFollow(arrow);
       
     }
@@ -153,6 +165,7 @@ export default class Juego extends Phaser.Scene {
       isDrawing = true;
       line.x1 = pointer.x;
       line.y1 = pointer.y;
+      scene.jugador.anims.play("aim");
     });
 
     this.input.on("pointermove", function (pointer) {
@@ -164,7 +177,8 @@ export default class Juego extends Phaser.Scene {
         graphics.strokeLineShape(line);
       }
     });
-
+  
+    this.jugador.anims.play("shoot");
     this.input.on("pointerup", function (pointer) {
       isDrawing = false;
       scene.shoot(line);
