@@ -11,6 +11,7 @@ export default class Juego extends Phaser.Scene {
     this.finalVarX = 0;
     this.finalVarY = 0;
     this.primaryDown = false;
+    this.arrow;
     this.contadorSuelo = 0;
     this.sonidoBackground;
   }
@@ -19,7 +20,7 @@ export default class Juego extends Phaser.Scene {
     this.enter = this.input.keyboard.addKey(
       Phaser.Input.Keyboard.KeyCodes.ENTER
     );
-    this.onClick = this.input.activePointer;
+    
   }
 
   create() {
@@ -51,7 +52,7 @@ export default class Juego extends Phaser.Scene {
     );
 
     this.jugador = this.physics.add
-      .sprite(spawnPoint.x, spawnPoint.y, "idle")
+      .sprite(spawnPoint.x, spawnPoint.y, "idleBow")
       .setCollideWorldBounds(true);
     this.jugador.setBounce(0.1);
     this.jugador.body.allowGravity = false;
@@ -68,7 +69,7 @@ export default class Juego extends Phaser.Scene {
     this.cameras.main.startFollow(this.objetivo);
     this.moverCamaraJugador();
 
-    // this.createArrows();
+    
     this.arrows = this.physics.add.group();
 
     this.drawLine();
@@ -83,10 +84,7 @@ export default class Juego extends Phaser.Scene {
 
     this.cameras.main.centerOn(0, 0);
     this.physics.world.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
-
-    this.cursors = this.input.keyboard.createCursorKeys();
-    // this.onClick;
-
+  
     this.physics.add.collider(this.jugador, mapaLayer);
 
     this.physics.add.collider(
@@ -107,22 +105,34 @@ export default class Juego extends Phaser.Scene {
 
   update() {
     if (this.isWinner) {
+      this.game.sound.stopAll();
       this.scene.start("ganador");
     }
-    if (this.isLoser) {
+    if (this.contadorSuelo=== 5) {
+      this.game.sound.stopAll();
       this.scene.start("perdedor");
     }
-
-    this.playerMovement();
-
     
     if (this.arrow) {
       const angle = Math.atan2(this.arrow.body.velocity.y, this.arrow.body.velocity.x);
       this.arrow.setRotation(angle);
     }
 
+    if (this.arrow) {
+    const arrowLimitX = 2400; // Límite horizontal para la flecha
+    const arrowLimitY = 640; // Límite vertical para la flecha
+
+    if (this.arrow.x < 0 || this.arrow.x > arrowLimitX || this.arrow.y > arrowLimitY) {
+      this.arrow.destroy(); // Destruir la flecha cuando se pasa del límite
+      console.log("destruida")
+      this.arrow = null;
+      this.contadorSuelo++
+      this.cameras.main.startFollow(this.jugador);
+      }
+    } 
     
   }
+   
 
   shoot(line) {
     console.log('shoot')
@@ -141,7 +151,7 @@ export default class Juego extends Phaser.Scene {
         speed * magnitude * Math.cos(direction),
         speed * magnitude * Math.sin(direction)
       );
-
+      this.jugador.anims.play("shoot");
       this.cameras.main.startFollow(arrow);
       
     }
@@ -153,15 +163,16 @@ export default class Juego extends Phaser.Scene {
     let isDrawing = false;
 
     const scene = this;
-
+    
     this.input.on("pointerdown", function (pointer) {
       isDrawing = true;
       line.x1 = pointer.x;
       line.y1 = pointer.y;
+      scene.jugador.anims.play("aim");
     });
-
+    
     this.input.on("pointermove", function (pointer) {
-      if (isDrawing) {
+      if (isDrawing) { 
         line.x2 = pointer.x;
         line.y2 = pointer.y;
         graphics.clear();
@@ -169,7 +180,6 @@ export default class Juego extends Phaser.Scene {
         graphics.strokeLineShape(line);
       }
     });
-
     this.input.on("pointerup", function (pointer) {
       isDrawing = false;
       scene.shoot(line);
@@ -192,20 +202,7 @@ export default class Juego extends Phaser.Scene {
     );
   }
 
-  playerMovement() {
-    if (this.cursors.left.isDown) {
-      this.jugador.setVelocityX(-160);
-      this.jugador.anims.play("left", true);
-    } else if (this.cursors.right.isDown) {
-      this.jugador.setVelocityX(500);
-      this.jugador.anims.play("right", true);
-    } else if (this.cursors.up.isDown) {
-      this.jugador.anims.play("shoot", true);
-    } else {
-      this.jugador.setVelocityX(0);
-      this.jugador.anims.play("idle", true);
-    }
-  }
+  
   colisionFlechaObjetivo(flecha, objetivo) {
     this.sonidoBackground.stop();
     this.scene.start("gameplay2");
@@ -215,5 +212,6 @@ export default class Juego extends Phaser.Scene {
     arrow.destroy();
     this.arrow = null;
     this.cameras.main.startFollow(this.jugador);
+    this.contadorSuelo++
   } 
 }

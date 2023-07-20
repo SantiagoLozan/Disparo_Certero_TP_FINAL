@@ -65,7 +65,7 @@ export default class Informacion extends Phaser.Scene {
     this.textoInformacion = this.add.text(
       55,
       200,
-      "Tendrá tres oportunidades para ganar el nivel.",
+      "Tendrá cinco oportunidades para ganar el nivel.",
       {
         fontSize: "16px",
         fontFamily: "Dosis Bold",

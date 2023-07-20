@@ -18,12 +18,13 @@ export default class Perdedor extends Phaser.Scene {
       fontFamily: "Dosis Bold",
       fill: "#FFFFFF",
     });
-    this.add.text(250, 500, "Presiona Enter para Regresar!", {
+    this.add.text(250, 450, "Presiona Enter para Regresar!", {
       fontSize: "26px",
       fontFamily: "Dosis Bold",
       fill: "#FFFFFF",
     });
     console.log("perdedor");
+    this.add.image(400, 525, "enter").setScale(0.5);
   }
 
   update() {
