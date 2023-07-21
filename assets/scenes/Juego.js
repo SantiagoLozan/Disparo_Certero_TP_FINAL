@@ -6,11 +6,6 @@ export default class Juego extends Phaser.Scene {
   init() {
     this.isWinner;
     this.isLoser;
-    this.firstVarX = 0;
-    this.firstVarY = 0;
-    this.finalVarX = 0;
-    this.finalVarY = 0;
-    this.primaryDown = false;
     this.arrow;
     this.contadorSuelo = 0;
     this.sonidoBackground;
@@ -104,11 +99,8 @@ export default class Juego extends Phaser.Scene {
   }
 
   update() {
-    if (this.isWinner) {
-      this.game.sound.stopAll();
-      this.scene.start("ganador");
-    }
-    if (this.contadorSuelo=== 5) {
+    
+    if (this.contadorSuelo === 5) {
       this.game.sound.stopAll();
       this.scene.start("perdedor");
     }
@@ -143,7 +135,6 @@ export default class Juego extends Phaser.Scene {
       var dy = line.y1 - line.y2;
       var magnitude = Math.sqrt(dx * dx + dy * dy);
       var direction = Math.atan2(dy, dx);
-      console.log("🚀 ~ file: Juego.js:128 ~ Juego ~ shoot ~ direction:", direction)
 
       var speed = 5;
       arrow.setRotation(direction);
@@ -204,7 +195,7 @@ export default class Juego extends Phaser.Scene {
 
   
   colisionFlechaObjetivo(flecha, objetivo) {
-    this.sonidoBackground.stop();
+    this.game.sound.stopAll();
     this.scene.start("gameplay2");
   }
 

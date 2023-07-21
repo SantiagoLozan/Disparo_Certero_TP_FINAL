@@ -25,6 +25,8 @@ export default class Precarga extends Phaser.Scene {
     this.load.image("cieloNivel2", "assets/images/BG4.png");
     this.load.image("objetivo", "assets/images/Objetivo.png");
     this.load.image("arrow", "assets/images/Arrow.png");
+    this.load.image("logoUnraf", "assets/images/logoUnraf.png");
+    this.load.image("botoncreditos", "assets/images/BotonCreditos.png");
     this.load.audio("BGM1", "assets/BGM/BGM1.mp3");
     this.load.audio("BGM2", "assets/BGM/BGM2.mp3");
 

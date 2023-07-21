@@ -84,4 +84,3 @@ export default class Informacion extends Phaser.Scene {
   }
 }
 
-//BOTON onPointer / .setInteractive / > menu

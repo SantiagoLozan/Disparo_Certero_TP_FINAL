@@ -18,6 +18,7 @@ export default class MenuPrincipal extends Phaser.Scene {
     this.botonMenu = this.add.image(400, 525, "botonmenu").setScale(0.5);
     
     this.botonInfo = this.add.image(135, 525, "botoninfo").setScale(0.5);
+    this.botonCred = this.add.image(665, 525, "botoncreditos").setScale(0.5);
   }
 
   update() {
@@ -30,6 +31,9 @@ export default class MenuPrincipal extends Phaser.Scene {
     this.botonInfo
       .setInteractive({ useHandCursor: true })
       .on("pointerdown", () => this.arranqueInfo());
+      this.botonCred
+      .setInteractive({ useHandCursor: true })
+      .on("pointerdown", () => this.arranqueCred());
   }
 
   arranqueJuego() {
@@ -38,5 +42,8 @@ export default class MenuPrincipal extends Phaser.Scene {
 
   arranqueInfo() {
     this.scene.start("informacion");
+  }
+  arranqueCred(){
+    this.scene.start("creditos")
   }
 }

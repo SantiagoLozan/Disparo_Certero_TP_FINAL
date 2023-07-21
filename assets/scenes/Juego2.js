@@ -6,11 +6,6 @@ export default class Juego extends Phaser.Scene {
   init() {
     this.isWinner;
     this.isLoser;
-    this.firstVarX = 0;
-    this.firstVarY = 0;
-    this.finalVarX = 0;
-    this.finalVarY = 0;
-    this.primaryDown = false;
     this.arrow;
     this.contadorSuelo = 0;
     this.sonidoBackground;
@@ -101,10 +96,6 @@ export default class Juego extends Phaser.Scene {
   }
 
   update() {
-    if (this.isWinner) {
-      this.game.sound.stopAll();
-      this.scene.start("ganador");
-    }
     if (this.contadorSuelo === 5) {
       this.game.sound.stopAll();
       this.scene.start("perdedor");
@@ -122,7 +113,6 @@ export default class Juego extends Phaser.Scene {
   
       if (this.arrow.x < 0 || this.arrow.x > arrowLimitX || this.arrow.y > arrowLimitY) {
         this.arrow.destroy(); // Destruir la flecha cuando se pasa del límite
-        console.log("destruida")
         this.arrow = null;
         this.contadorSuelo++
         this.cameras.main.startFollow(this.jugador);
@@ -132,7 +122,7 @@ export default class Juego extends Phaser.Scene {
   }
 
   shoot(line) {
-    console.log('shoot')
+    
     const arrow = this.arrows.create(this.jugador.x, this.jugador.y, "arrow");
     if (arrow) {
       this.arrow = arrow;
@@ -140,7 +130,7 @@ export default class Juego extends Phaser.Scene {
       var dy = line.y1 - line.y2;
       var magnitude = Math.sqrt(dx * dx + dy * dy);
       var direction = Math.atan2(dy, dx);
-      console.log("🚀 ~ file: Juego.js:128 ~ Juego ~ shoot ~ direction:", direction)
+      
 
       var speed = 5;
       arrow.setRotation(direction);
@@ -204,7 +194,7 @@ export default class Juego extends Phaser.Scene {
 
 
   colisionFlechaObjetivo(flecha, objetivo) {
-    this.sonidoBackground.stop();
+    this.game.sound.stopAll();
     this.scene.start("ganador");
   }
 
