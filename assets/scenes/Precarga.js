@@ -27,6 +27,11 @@ export default class Precarga extends Phaser.Scene {
     this.load.image("arrow", "assets/images/Arrow.png");
     this.load.image("logoUnraf", "assets/images/logoUnraf.png");
     this.load.image("botoncreditos", "assets/images/BotonCreditos.png");
+    this.load.image("github", "assets/images/github.png");
+    this.load.image("twitter", "assets/images/twitter.png");
+    this.load.image("linkedin", "assets/images/linkedin.png");
+    this.load.image("ins1", "assets/images/1.png");
+    this.load.image("ins2", "assets/images/2.png");
     this.load.audio("BGM1", "assets/BGM/BGM1.mp3");
     this.load.audio("BGM2", "assets/BGM/BGM2.mp3");
 
@@ -48,7 +53,7 @@ export default class Precarga extends Phaser.Scene {
   create() {
     this.add.image(400, 280, "menu");
 
-    this.add.image(400, 525, "enter").setScale(0.5);
+    this.botonEnter = this.add.image(400, 525, "enter").setScale(0.5);
 
     this.anims.create({
       key: "idleBow",
@@ -81,5 +86,11 @@ export default class Precarga extends Phaser.Scene {
     if (this.enter.isDown) {
       this.scene.start("menu");
     }
+    this.botonEnter
+      .setInteractive({ useHandCursor: true })
+      .on("pointerdown", () => this.arranqueMenu());
+  }
+  arranqueMenu() {
+    this.scene.start("menu");
   }
 }
