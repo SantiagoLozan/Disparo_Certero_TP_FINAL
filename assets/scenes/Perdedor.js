@@ -13,6 +13,8 @@ export default class Perdedor extends Phaser.Scene {
 
   create() {
     this.add.image(400, 300, "backgroundInfo");
+    this.sonidoPerdedor = this.sound.add("lose", { loop: false });
+    this.sonidoPerdedor.play();
     this.add.text(35, 120, "INTENTA MEJORAR TU PUNTERÍA", {
       fontSize: "42px",
       fontFamily: "Dosis Bold",
