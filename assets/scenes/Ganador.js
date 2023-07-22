@@ -13,6 +13,8 @@ export default class Ganador extends Phaser.Scene {
 
   create() {
     this.add.image(400, 300, "backgroundInfo");
+    this.sonidoGanador = this.sound.add("win", { loop: false });
+    this.sonidoGanador.play();
     this.add.text(35, 120, "GENIAL! TU PUNTERÍA ES INFALIBLE", {
       fontSize: "42px",
       fontFamily: "Dosis Bold",
