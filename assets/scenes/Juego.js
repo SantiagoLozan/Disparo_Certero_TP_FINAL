@@ -31,7 +31,7 @@ export default class Juego extends Phaser.Scene {
 
     mapaLayer.setCollisionByProperty({ colision: true });
 
-    this.sonidoBackground = this.sound.add("BGM1", { loop: false });
+    this.sonidoBackground = this.sound.add("BGM1", { loop: true });
     this.sonidoBackground.play();
 
     let spawnPoint = map.findObject(
