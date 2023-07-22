@@ -29,7 +29,8 @@ export default class Juego extends Phaser.Scene {
     const objetosLayer = map.getObjectLayer("Objetos");
 
     mapaLayer.setCollisionByProperty({ colision: true });
-
+    
+    this.game.sound.stopAll();
     this.sonidoBackground = this.sound.add("BGM2", { loop: true });
     this.sonidoBackground.play();
 
