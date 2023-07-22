@@ -5,6 +5,7 @@ import Perdedor from "./assets/scenes/Perdedor.js";
 import MenuPrincipal from "./assets/scenes/MenuPrincipal.js";
 import Informacion from "./assets/scenes/Informacion.js";
 import Juego2 from "./assets/scenes/Juego2.js";
+import Creditos from "./assets/scenes/Creditos.js";
 
 // Create a new Phaser config object
 const config = {
@@ -33,7 +34,7 @@ const config = {
   // List of scenes to load
   // Only the first scene will be shown
   // Remember to import the scene before adding it to the list
-  scene: [Precarga, Juego, Juego2, Informacion, Ganador, Perdedor, MenuPrincipal],
+  scene: [Precarga, Juego, Juego2, Informacion, Ganador, Perdedor, Creditos, MenuPrincipal],
 };
 
 // Create a new Phaser game instance

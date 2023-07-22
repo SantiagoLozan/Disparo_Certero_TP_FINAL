@@ -4,13 +4,6 @@ export default class Juego extends Phaser.Scene {
   }
 
   init() {
-    this.isWinner;
-    this.isLoser;
-    this.firstVarX = 0;
-    this.firstVarY = 0;
-    this.finalVarX = 0;
-    this.finalVarY = 0;
-    this.primaryDown = false;
     this.arrow;
     this.contadorSuelo = 0;
     this.sonidoBackground;
@@ -104,11 +97,8 @@ export default class Juego extends Phaser.Scene {
   }
 
   update() {
-    if (this.isWinner) {
-      this.game.sound.stopAll();
-      this.scene.start("ganador");
-    }
-    if (this.contadorSuelo=== 5) {
+    
+    if (this.contadorSuelo === 5) {
       this.game.sound.stopAll();
       this.scene.start("perdedor");
     }
@@ -119,23 +109,20 @@ export default class Juego extends Phaser.Scene {
     }
 
     if (this.arrow) {
-    const arrowLimitX = 2400; // Límite horizontal para la flecha
-    const arrowLimitY = 640; // Límite vertical para la flecha
+    const arrowLimitX = 2400; 
+    const arrowLimitY = 640; 
 
     if (this.arrow.x < 0 || this.arrow.x > arrowLimitX || this.arrow.y > arrowLimitY) {
-      this.arrow.destroy(); // Destruir la flecha cuando se pasa del límite
-      console.log("destruida")
+      this.arrow.destroy(); 
       this.arrow = null;
       this.contadorSuelo++
       this.cameras.main.startFollow(this.jugador);
       }
     } 
-    
   }
    
 
   shoot(line) {
-    console.log('shoot')
     const arrow = this.arrows.create(this.jugador.x, this.jugador.y, "arrow");
     if (arrow) {
       this.arrow = arrow;
@@ -143,7 +130,6 @@ export default class Juego extends Phaser.Scene {
       var dy = line.y1 - line.y2;
       var magnitude = Math.sqrt(dx * dx + dy * dy);
       var direction = Math.atan2(dy, dx);
-      console.log("🚀 ~ file: Juego.js:128 ~ Juego ~ shoot ~ direction:", direction)
 
       var speed = 5;
       arrow.setRotation(direction);
@@ -152,8 +138,7 @@ export default class Juego extends Phaser.Scene {
         speed * magnitude * Math.sin(direction)
       );
       this.jugador.anims.play("shoot");
-      this.cameras.main.startFollow(arrow);
-      
+      this.cameras.main.startFollow(arrow);  
     }
   }
 
@@ -170,7 +155,6 @@ export default class Juego extends Phaser.Scene {
       line.y1 = pointer.y;
       scene.jugador.anims.play("aim");
     });
-    
     this.input.on("pointermove", function (pointer) {
       if (isDrawing) { 
         line.x2 = pointer.x;
@@ -201,10 +185,8 @@ export default class Juego extends Phaser.Scene {
       }
     );
   }
-
-  
   colisionFlechaObjetivo(flecha, objetivo) {
-    this.sonidoBackground.stop();
+    this.game.sound.stopAll();
     this.scene.start("gameplay2");
   }
 

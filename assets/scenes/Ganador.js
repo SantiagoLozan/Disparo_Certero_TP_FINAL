@@ -13,8 +13,13 @@ export default class Ganador extends Phaser.Scene {
 
   create() {
     this.add.image(400, 300, "backgroundInfo");
-    this.add.text(350, 300, "HAS GANADO!", {
-      fontSize: "26px",
+    this.add.text(35, 120, "GENIAL! TU PUNTERÍA ES INFALIBLE", {
+      fontSize: "42px",
+      fontFamily: "Dosis Bold",
+      fill: "#FFFFFF",
+    });
+    this.add.text(120, 180, "COMIENZA NUEVAMENTE", {
+      fontSize: "42px",
       fontFamily: "Dosis Bold",
       fill: "#FFFFFF",
     });
@@ -23,14 +28,18 @@ export default class Ganador extends Phaser.Scene {
       fontFamily: "Dosis Bold",
       fill: "#FFFFFF",
     });
-    this.add.image(400, 525, "enter").setScale(0.5);
+    this.add.image(400, 325, "idleBow").setScale(1.5);
+    this.botonEnter = this.add.image(400, 525, "enter").setScale(0.5);
 
-    console.log("ganador");
   }
 
   update() {
     if (this.enter.isDown) {
       this.scene.start("menu");
     }
+    this.botonEnter.setInteractive({ useHandCursor: true }).on("pointerdown", () => this.arranqueMenu());
+  }
+  arranqueMenu() {
+    this.scene.start("menu");
   }
 }
