@@ -4,8 +4,6 @@ export default class Juego extends Phaser.Scene {
   }
 
   init() {
-    this.isWinner;
-    this.isLoser;
     this.arrow;
     this.contadorSuelo = 0;
     this.sonidoBackground;
@@ -100,29 +98,24 @@ export default class Juego extends Phaser.Scene {
       this.game.sound.stopAll();
       this.scene.start("perdedor");
     }
-
-
     if (this.arrow) {
       const angle = Math.atan2(this.arrow.body.velocity.y, this.arrow.body.velocity.x);
       this.arrow.setRotation(angle);
     }
 
     if (this.arrow) {
-      const arrowLimitX = 2400; // Límite horizontal para la flecha
-      const arrowLimitY = 640; // Límite vertical para la flecha
+      const arrowLimitX = 2400;
+      const arrowLimitY = 640;
   
       if (this.arrow.x < 0 || this.arrow.x > arrowLimitX || this.arrow.y > arrowLimitY) {
-        this.arrow.destroy(); // Destruir la flecha cuando se pasa del límite
+        this.arrow.destroy();
         this.arrow = null;
         this.contadorSuelo++
         this.cameras.main.startFollow(this.jugador);
         }
-      } 
-    
+      }  
   }
-
   shoot(line) {
-    
     const arrow = this.arrows.create(this.jugador.x, this.jugador.y, "arrow");
     if (arrow) {
       this.arrow = arrow;
@@ -131,7 +124,6 @@ export default class Juego extends Phaser.Scene {
       var magnitude = Math.sqrt(dx * dx + dy * dy);
       var direction = Math.atan2(dy, dx);
       
-
       var speed = 5;
       arrow.setRotation(direction);
       arrow.setVelocity(
@@ -140,7 +132,6 @@ export default class Juego extends Phaser.Scene {
       );
       this.jugador.anims.play("shoot");
       this.cameras.main.startFollow(arrow);
-      
     }
   }
 
@@ -166,8 +157,7 @@ export default class Juego extends Phaser.Scene {
         graphics.lineStyle(2, 0xffffff);
         graphics.strokeLineShape(line);
       }
-    });
-  
+    }); 
     this.jugador.anims.play("shoot");
     this.input.on("pointerup", function (pointer) {
       isDrawing = false;

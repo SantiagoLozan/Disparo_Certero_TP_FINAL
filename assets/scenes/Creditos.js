@@ -11,7 +11,7 @@ export default class Creditos extends Phaser.Scene {
   
     create() {
       this.add.image(400, 300, "backgroundInfo");
-      this.botonAtras = this.add.image(120, 525, "botonatras").setScale(0.5);
+      this.botonAtras = this.add.image(120, 525, "botonAtras").setScale(0.5);
       this.logo = this.add.image(400, 70, "logoUnraf").setScale(1.6);
       this.logoGH = this.add.image(450, 350, "github").setScale(0.7);
       this.logoTW = this.add.image(300, 350, "twitter").setScale(0.125);

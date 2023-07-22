@@ -11,7 +11,7 @@ export default class Informacion extends Phaser.Scene {
 
   create() {
     this.add.image(400, 300, "backgroundInfo");
-    this.botonAtras = this.add.image(120, 525, "botonatras").setScale(0.5);
+    this.botonAtras = this.add.image(120, 525, "botonAtras").setScale(0.5);
     this.textoInformacion = this.add.text(
      350,
       20,
